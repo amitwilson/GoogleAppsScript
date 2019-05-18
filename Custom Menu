@@ -1,0 +1,11 @@
+/*
+Used with Google Sheets, Docs and Slides.
+When a Sheet/Doc/Slide is opened, this menu item appears
+*/
+
+function onOpen() {
+  var ui = SpreadsheetApp.getUi();
+  ui.createMenu('Custom Menu')
+      .addItem('First item', 'menuItem1')
+      .addToUi();
+}
