@@ -1,0 +1,12 @@
+/*
+Google Sheet names may be changed
+But their number does not change
+This function logs the name and number of each sheet
+*/
+
+function log_Sheet_Number_Name() {
+  var allSheets = SpreadsheetApp.getActiveSpreadsheet().getSheets();
+  for (var sheet in allSheets) {
+  Logger.log("%s: %s", sheet, allSheets[sheet].getName());
+  }
+}
