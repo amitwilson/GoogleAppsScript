@@ -1,0 +1,8 @@
+function onEdit(e) {
+  var sheet = SpreadsheetApp.getActiveSheet();
+  var criteria = SpreadsheetApp.newFilterCriteria().whenTextContains("4210").build();
+  var lastRow = sheet.getLastRow();
+  var lastCol = sheet.getLastColumn();
+  var range = sheet.getRange(2, 1, lastRow - 1, lastCol);
+  range.createFilter().setColumnFilterCriteria(4, criteria);
+}
