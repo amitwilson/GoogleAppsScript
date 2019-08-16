@@ -1,0 +1,9 @@
+// Respond to incoming webhook data
+
+  var body = {
+    "code": "200",
+    "Message": "Success"
+  };
+  
+  return ContentService.createTextOutput(JSON.stringify(body))
+  .setMimeType(ContentService.MimeType.JSON);
