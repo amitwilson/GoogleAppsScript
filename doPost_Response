@@ -1,9 +1,20 @@
-// Respond to incoming webhook data
+function doPost(e) {
+
+  // Respond to incoming webhook data
 
   var body = {
     "code": "200",
     "Message": "Success"
   };
   
-  return ContentService.createTextOutput(JSON.stringify(body))
-  .setMimeType(ContentService.MimeType.JSON);
+  /**
+  * when post is called by $.ajax it shall be modified 
+  */
+  if(e.parameter.callback===undefined){
+    return ContentService.createTextOutput(JSON.stringify(obj))
+  }else{ // for AJAX
+     return ContentService.createTextOutput(e.parameter.callback + "(" + JSON.stringify(obj) + ")")
+    .setMimeType(ContentService.MimeType.JAVASCRIPT);   
+  }
+
+}
