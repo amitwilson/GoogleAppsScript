@@ -1,0 +1,24 @@
+function mailDataAsExcel(data, to, subject, fileName, body) {
+
+  var newss = SpreadsheetApp.create("tempSheet");
+  newss.getSheets()[0].getRange(1, 1, data.length, data[0].length).setValues(data);
+  newss.getSheets()[0].setName(fileName);
+  
+  var url = "https://docs.google.com/feeds/download/spreadsheets/Export?key=" + newss.getId() + "&exportFormat=xlsx";
+  
+  var params = {
+    method      : "get",
+    headers     : {"Authorization": "Bearer " + ScriptApp.getOAuthToken()},
+    muteHttpExceptions: true
+  };
+  
+  var blob = UrlFetchApp.fetch(url, params).getBlob();
+  
+  blob.setName(fileName + ".xlsx");
+  
+  MailApp.sendEmail(to, subject, body, {
+    attachments:[blob]
+  });
+  
+  DriveApp.getFileById(newss.getId()).setTrashed(true);
+}
