@@ -1,0 +1,36 @@
+// Link to demo sheet: https://docs.google.com/spreadsheets/d/16N-_gBKprgkyKikRxWzFc_LGKCQCQ9tuajY9gU8So18/
+
+function onEdit(e) { // Runs automatically when the user edits the sheet
+
+  var value = e.value; // Get the new value entered into the edited cell
+  var col = e.range.getColumn(); // Get the column number of the edited cell
+  var row = e.range.getRow(); // Get the row number of the edited cell
+  
+  if (col == 2 && row >= 14 && row <= 20) { // Make sure that the edited cell is part of the table
+    
+    var sheet = SpreadsheetApp.getActiveSheet(); // Get the sheet that has the table with the list of cities
+    var dropdownData = sheet.getRange("B5:F8").getValues(); // Get the table with the list of cities.
+    
+    var listOfCountries = dropdownData[0]; // The top row is the list of countries
+    var countryColumn = listOfCountries.indexOf(value); // Find the column in which the country name appears
+    
+    if (countryColumn != -1) { // If the new country name is in the list
+      var cityList = [];
+      for (var dataRow = 1; dataRow < dropdownData.length; dataRow++) {
+        cityList.push(dropdownData[dataRow][countryColumn]);
+      }
+      
+      var cityCell = sheet.getRange(row, col + 1);
+      
+      cityCell
+      .clearDataValidations() // Remove any existing data validation in the target cell
+      .clearContent(); // Clear the cell
+      
+      var rule = SpreadsheetApp.newDataValidation().requireValueInList(cityList, true).build();
+      cityCell.setDataValidation(rule);
+      
+    }   
+    
+  }
+  
+}
