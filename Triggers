@@ -1,0 +1,22 @@
+function install() {
+  var triggers = ScriptApp.getProjectTriggers();
+  if (triggers.length < 1) { 
+    ScriptApp.newTrigger('Name_Of_Function).timeBased().atHour(8).nearMinute(0).everyDays(1).create(); // 8am every day
+    SpreadsheetApp.getActive().toast('Trigger added');
+  } else {
+    SpreadsheetApp.getActive().toast('Trigger already exist');    
+  }
+}
+
+// Careful: Will remove ALL triggers
+function remove() {
+  var triggers = ScriptApp.getProjectTriggers();
+  if ( triggers.length > 0) {
+    for (var i = 0; i < triggers.length; i++) {
+      ScriptApp.deleteTrigger(triggers[i]);
+    }
+    SpreadsheetApp.getActive().toast('Trigger removed');
+  } else {
+    SpreadsheetApp.getActive().toast('There are no triggers to remove');
+  }
+}
