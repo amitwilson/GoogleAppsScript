@@ -1,0 +1,36 @@
+// See al stickers in a set with their ID to find the one to send
+
+function showStickerSet() {
+  var token = 'Telegram_bot_token';
+  var stickerSetName = 'futurama_pouyasaadeghi'; // For example, this comes from the url https://tlgrm.eu/stickers/futurama_pouyasaadeghi
+  var chatID = 'Your_Chat_ID';
+  
+  // Get the sticker set
+  var url = 'https://api.telegram.org/bot' + 
+    token +
+      '/getStickerSet?name=' +
+        stickerSetName;  
+  var response = UrlFetchApp.fetch(url);
+  response = JSON.parse(response.getContentText());
+  var stickers = response.result.stickers;
+  
+  var urlBaseSticker = 'https://api.telegram.org/bot' +
+    token +
+      '/sendSticker?chat_id=' +
+        chatID +
+          '&sticker=';
+          
+  var urlBaseMsg = 'https://api.telegram.org/bot' +
+    token +
+      '/sendMessage?chat_id=' +
+        chatID +
+          '&text=';
+          
+  // Loop through set to get sticker with its's ID in your Telegram chat window
+  for (var s in stickers) {
+    url = urlBaseSticker + stickers[s].file_id;
+    UrlFetchApp.fetch(url);
+    url = urlBaseMsg + stickers[s].file_id;
+    UrlFetchApp.fetch(url);
+  }
+}
