@@ -1,0 +1,53 @@
+// Send SMS
+
+function sendSms() {
+ 
+  var to = '+441234567890'; // in E.164 format. https://www.twilio.com/docs/glossary/what-e164
+  var from = '+441234567890'; // As setup in your Twilio account
+  var smsMessage = 'Hello world!';
+
+  var acSID = 'Your_Twilio_Account_SID'; // don;t use the test credentials. Use the live credentials
+  var authToken = 'Your_Twilio_Auth_Token';
+  var messages_url = 'https://api.twilio.com/2010-04-01/Accounts/' + acSID + '/Messages.json';
+
+  var payload = {
+    "To": to,
+    "Body" : smsMessage,
+    "From" : from
+  };
+
+  var options = {
+    "method" : "post",
+    "muteHttpExceptions" : true,
+    "payload" : payload
+  };
+
+  options.headers = { 
+    "Authorization" : "Basic " + Utilities.base64Encode(acSID+":"+authToken)
+  };
+
+  var response = UrlFetchApp.fetch(messages_url, options);
+  var json = response.getContentText();
+  var data = JSON.parse(json);
+  Logger.log(data);
+}
+
+// Check status of SMS
+function checkStatus() {
+  var acSID = 'Your_Twilio_Account_SID'; // don;t use the test credentials. Use the live credentials
+  var authToken = 'Your_Twilio_Auth_Token';
+  
+  var msgID = 'ID_of_Msg'; // For which the status is to be checked
+  var url = 'https://api.twilio.com/2010-04-01/Accounts/' + acSID + '/Messages/' + msgID + '.json';
+  var options = {};
+  
+  options.headers = { 
+    "Authorization" : "Basic " + Utilities.base64Encode(acSID+":"+authToken)
+  };
+
+  var response = UrlFetchApp.fetch(url, options);
+  var json = response.getContentText();
+  var data = JSON.parse(json);
+  Logger.log(data);
+  Logger.log(data.status); // queued, failed, sent, delivered, or undelivered.
+}
