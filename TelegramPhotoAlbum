@@ -1,0 +1,39 @@
+Send the images one by one to the bot. Send as "Drop Photos", not as "Drop Images" (this is a file and can't be sent onwards as part of an album).
+
+If a webhook is set, can't use the getUpdates method to see the IDs of the images.
+If a webhook is not in place, the getUpdates method is the easiest - create a url and use a browser to read the photo images IDs.
+
+In that case log the incoming images using:
+
+function doPost(e) {  
+
+  var content = JSON.parse(e.postData.contents);
+  
+  var logSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("log");
+  
+  logSheet.appendRow([new Date(), content.message.photo[0]]);
+  
+}
+
+To send the album from the Bot:
+
+function sendPhotoAlbum() {
+  
+  var media = '[{"media":"Ag...Q","type":"photo"},' +
+    '{"media":"Ag...Q","type":"photo"},' +
+      '{"media":"Ag...Q","type":"photo"},' +
+        '{"media":"Ag...Q","type":"photo"},' +
+          '{"media":"Ag...Q","type":"photo"},' +
+            '{"media":"Ag...Q","type":"photo"}]';
+  
+  media = encodeURIComponent(media);
+  
+  var url = 'https://api.telegram.org/bot' + token + '/sendMediaGroup?chat_id=' + chatID + '&media=' + media;
+  
+  var response = UrlFetchApp.fetch(url);
+  
+  response = JSON.parse(response.getContentText());
+  
+  logFS(response);
+  
+}
