@@ -1,0 +1,24 @@
+function finalCountdown() {
+  var token = <token>;
+  var chatID = <chatID>;
+  
+  var url = 'https://api.telegram.org/bot' + token +
+    '/sendMessage?chat_id=' + chatID + '&text=It\'s the final countdown!';
+  var response = UrlFetchApp.fetch(url);
+  response = JSON.parse(response.getContentText());
+  var msgID = response.result.message_id;
+  Utilities.sleep(1000);
+  
+  var baseUrl = 'https://api.telegram.org/bot' + token +
+    '/editMessageText?chat_id=' + chatID + '&message_id=' + msgID + '&text=';
+  
+  var url;
+  for (var i = 10; i > 0 ; i--) {    
+    url = baseUrl + i;
+    UrlFetchApp.fetch(url);
+    Utilities.sleep(1000);
+  }
+  
+  url = baseUrl + 'Boom!';
+  UrlFetchApp.fetch(url);
+}
