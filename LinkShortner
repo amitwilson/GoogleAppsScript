@@ -1,0 +1,32 @@
+// Link shortner
+
+// Firebase Dynamic Links Short Links API Reference
+// https://firebase.google.com/docs/reference/dynamic-links/link-shortener
+
+function shortenUrl(longLink) {
+  var fldAPIKey = '###key###';
+  var apiUrl = 'https://firebasedynamiclinks.googleapis.com/v1/shortLinks?key=' + fldAPIKey;
+  var method = 'POST';
+  var header = {
+    'Content-Type' : 'application/json'
+  }  
+  var prefix = 'https://##YourDomain##.page.link'; // To give it a branded flavour
+  var formData = {
+    "dynamicLinkInfo": {
+      "domainUriPrefix": prefix,
+      "link": longLink },
+    "suffix": {
+      "option": "UNGUESSABLE"
+    }
+  }
+  var payload = JSON.stringify(formData);
+  var options = {
+    'method'  : method,
+    'headers' : header,
+    'payload' : payload
+  };  
+  var response = UrlFetchApp.fetch(apiUrl, options);
+  response = JSON.parse(response.getContentText());
+  var shortLink = response.shortLink;
+  return shortLink;
+}
