@@ -1,0 +1,17 @@
+How to use /dev
+
+Long version: https://github.com/tanaikech/taking-advantage-of-Web-Apps-with-google-apps-script
+
+Short version:
+
+// DriveApp.getFiles() // This comment is used for including a scope of https://www.googleapis.com/auth/drive.
+// DEV WEBHOOK for a Telegram bot
+function setDevWebhook() {
+  var telegramUrl = "https://api.telegram.org/bot" + token;
+  var webAppUrl = "https://script.google.com/macros/s/###/dev";
+  var accToken = ScriptApp.getOAuthToken();
+  var webAppUrlRefresh = webAppUrl + '?access_token=' + accToken;
+  var url = telegramUrl + "/setWebhook?url=" + webAppUrlRefresh;
+  var response = UrlFetchApp.fetch(url);
+  Logger.log(response);
+}
