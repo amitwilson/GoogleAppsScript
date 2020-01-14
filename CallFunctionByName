@@ -1,0 +1,11 @@
+// Call Google Apps Script Function by String Name
+
+function testFunction() {
+  var ScriptName = "Alibaba";
+  var p = "Open sesame!"
+  this[ScriptName](p);
+}
+
+function Alibaba(p) {
+  Logger.log(p);
+}
