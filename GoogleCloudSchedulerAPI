@@ -1,0 +1,44 @@
+// Create a job in Google Cloud Scheduler from Google Apps Script
+// https://cloud.google.com/scheduler/docs/reference/rest/v1/projects.locations.jobs/create
+
+function makeScheduler() {
+  var projectName = 'YOUR_PROJECT_NAME';
+  var projectLocation = 'YOUR_PROECT_LOCATION';
+  var jobName = 'YOUR_JOB_NAME';
+  var pubSubTopic = 'YOUR_PUB_SUB_NAME';
+  var api = 'https://cloudscheduler.googleapis.com/v1beta1/projects/' + projectName + '/locations/' + projectLocation + '/jobs';
+  var headers = {
+    'Authorization' : 'Bearer ' + ScriptApp.getOAuthToken()
+  };
+  var data = {
+    'name'         : projects/' + projectName + '/locations/' + projectLocation + '/jobs/' + jobName;
+    'schedule'     : '0 * * * *', // crontab - https://crontab.guru/
+    'timeZone'     : 'GMT',
+    'pubsubTarget' : {
+      'topicName'  : projects/' + projectName + '/topics/' + pubSubTopic,
+      'attributes' : {
+        'name'     : 'wrench'
+      }
+    }
+  };
+  var options = {
+    'headers'     : headers,
+    'contentType' : 'application/json',
+    'method'      : 'POST',
+    'payload'     : JSON.stringify(data)
+  };
+  var response = UrlFetchApp.fetch(api, options);  
+  Logger.log(response);
+}
+
+///////////////////////////////
+// Scopes
+{
+ ...
+ "oauthScopes": [
+    "https://www.googleapis.com/auth/cloud-scheduler",
+    "https://www.googleapis.com/auth/cloud-platform",
+    "https://www.googleapis.com/auth/script.external_request"
+  ],
+ ...
+ }
