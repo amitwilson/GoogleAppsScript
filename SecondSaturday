@@ -1,0 +1,9 @@
+function secondSaturday() {
+  var todayDate = new Date();
+  
+  // What day of the week is the 1st of this month?
+  var firstWeekDay = new Date(todayDate.getFullYear(), todayDate.getMonth(), 1).getDay(); // Sunday = 0, Monday = 1, ...
+  
+  var secondSat = 14 - firstWeekDay;
+  Logger.log(secondSat);
+}
