@@ -1,0 +1,31 @@
+/////////////Code.gs/////////////
+
+function onOpen() {
+  var ui = SpreadsheetApp.getUi();
+  ui.createMenu('📮 Open Gmail')
+    .addItem('Open Gmail', 'openGmail')
+    .addToUi();
+}
+
+////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
+
+function openGmail() {
+  var htmlOutput = HtmlService.createHtmlOutputFromFile('openUrl').setHeight(100);
+  SpreadsheetApp.getUi().showModalDialog(htmlOutput, 'Opening Gmail');
+}
+
+
+/////////////openUrl.html/////////////
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+     var urlToOpen ='https://mail.google.com/mail/u/0/#inbox';
+     var winRef = window.open(urlToOpen);
+     google.script.host.close();
+    </script>
+  </head>
+</html>
