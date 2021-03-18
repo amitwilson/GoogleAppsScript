@@ -1,0 +1,29 @@
+function onOpen(e) {
+  SpreadsheetApp.getUi()
+    .createMenu('🐱 Scratchy')
+    .addItem('Replace everywhere', 'replaceEverywhere')
+    .addItem('Replace on this sheet', 'replaceOnSheet')
+    .addItem('Replace in selected range', 'replaceInRange')
+    .addToUi();
+}
+
+function replaceEverywhere() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet();
+  var textFinder = sheet.createTextFinder('Tom');
+  textFinder.replaceAllWith('Scratchy');
+}
+
+function replaceOnSheet() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet();
+  var activeSheet = sheet.getActiveSheet();
+  var textFinder = activeSheet.createTextFinder('Tom');
+  textFinder.replaceAllWith('Scratchy');
+}
+
+function replaceInRange() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet();
+  var activeSheet = sheet.getActiveSheet();
+  var range = sheet.getActiveRange();
+  var textFinder = range.createTextFinder('Tom');
+  textFinder.replaceAllWith('Scratchy');
+}
