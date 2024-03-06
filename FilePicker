@@ -1,0 +1,44 @@
+/**
+* Displays an HTML-service dialog in Google Sheets that contains client-side
+* JavaScript code for the Google Picker API.
+*/
+function showPicker() {
+  
+  
+  var html = HtmlService.createHtmlOutputFromFile('Picker.html')
+  .setWidth(600)
+  .setHeight(425)
+  .setSandboxMode(HtmlService.SandboxMode.IFRAME);
+  SpreadsheetApp.getUi().showModalDialog(html, 'Select Folder');
+}
+
+function getOAuthToken() {
+  DriveApp.getRootFolder();
+  return ScriptApp.getOAuthToken();
+}
+
+function writeToSheet(id) {
+  var file = DriveApp.getFileById(id);
+  var name = file.getName();
+  var path = getpath_(id);
+  var ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Sheet1");
+  var liveRow = ss.getActiveCell().getRow();
+  var row = ss.getActiveCell().getRow();
+  ss.getRange(liveRow, 2, 1, 3).setValues([[path, name, id]]);
+  return;
+}
+
+function getpath_(id) {
+  var file = DriveApp.getFileById(id);
+  var parent = file.getParents().next();
+  var foID = parent.getId();
+  var path = parent.getName();
+  var check = DriveApp.getFolderById(foID).getParents().hasNext();
+  while (check) {
+    parent = DriveApp.getFolderById(foID).getParents().next();
+    foID = parent.getId();
+    path = parent.getName() + "/" + path;
+    check = DriveApp.getFolderById(foID).getParents().hasNext();
+  }
+  return path;
+}
